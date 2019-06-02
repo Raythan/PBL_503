@@ -1,6 +1,7 @@
 import java.util.Observable;
+import java.util.Observer;
 
-public class Produto extends Observable{
+public class Produto extends Observable implements Observer{
 	private String nome;
 	private float desconto;
 	private float peso;
@@ -138,9 +139,11 @@ public class Produto extends Observable{
 	//
 	// Método que remove o valor do desconto e retorna o cálculo ao preço original
 	//
-	public void RemoveDesconto() {
-		this.desconto = 0.0f;
-		System.out.println("Desconto removido de " + this.getNome());
+	public void removeDesconto() {
+		if(this.desconto > 0.0f) {
+			this.desconto = 0.0f;
+			System.out.println("Desconto removido de " + this.getNome());
+		}
 	}
 	public Produto(String nomeParametro, float pesoParametro, float precoParametro, String tipoParametro, String marcaParametro, int quantidadeParametro, String caracteristicaParametro) {
 		this.setNome(nomeParametro);
@@ -150,5 +153,13 @@ public class Produto extends Observable{
 		this.setMarca(marcaParametro);
 		this.setQuantidade(quantidadeParametro);
 		this.setCaracteristicaEspecifica(caracteristicaParametro);
+	}
+	@Override
+	public void update(Observable prmObserver, Object prm) {
+		if(prmObserver != null && this.desconto < (float)prm) {
+			this.desconto = (float)prm;
+			System.out.println("Este produto agora tem desconto por departamento de " + prm + "%");
+		}
+		
 	}
 }

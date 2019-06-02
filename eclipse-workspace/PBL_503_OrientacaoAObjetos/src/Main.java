@@ -86,7 +86,8 @@ public class Main {
 							"(1) - Tipo específico\n" + 
 							"(2) - Marca específica\n" + 
 							"(3) - Nome específico\n" + 
-							"(4) - Todos os produtos da loja\n"
+							"(4) - Todos os produtos da loja\n" + 
+							"(5) - Departamento específico\n"
 							);
 					prmIndex = leia.nextInt();
 					System.out.println("Qual o valor do desconto? Ex.: 12,0 = 12%, 0,3 = 3%\n");
@@ -121,8 +122,8 @@ public class Main {
 	//
 	public static void RemoveDesconto(ArrayList<ArrayList<Produto>> prmLoja) {
 		for(ArrayList<Produto> departamentos : prmLoja) {
-			for(int i = 0; i < departamentos.size(); i++) {
-				departamentos.get(i).RemoveDesconto();
+			for(Produto prm : departamentos) {
+				prm.removeDesconto();
 			}
 		}
 	}
@@ -130,19 +131,30 @@ public class Main {
 	// Método que insereDesconto
 	//
 	public static void InsereDesconto(ArrayList<ArrayList<Produto>> prmLoja, int prmIndex, float prmDesconto, String prmNome) {
-		for(ArrayList<Produto> departamentos : prmLoja) {
-			for(int i = 0; i < departamentos.size(); i++) {
-				if(prmIndex == 1) {
-					departamentos.get(i).InsereDescontoTipo(prmDesconto, prmNome);
+		if(prmIndex == 5) {
+			for(int i = 0 ; i < prmLoja.size(); i++) {
+				if(prmNome.equals(prmLoja.get(i))) {
+					//prmLoja.get(i).
 				}
-				if(prmIndex == 2) {
-					departamentos.get(i).InsereDescontoMarca(prmDesconto, prmNome);
-				}
-				if(prmIndex == 3) {
-					departamentos.get(i).InsereDescontoNome(prmDesconto, prmNome);
-				}
-				if(prmIndex == 4) {
-					departamentos.get(i).InsereDesconto(prmDesconto);
+			}
+		}
+		else {
+			for(ArrayList<Produto> prmDepartamentos : prmLoja) {
+				for(Produto prmProdutos : prmDepartamentos) {
+					switch(prmIndex) {
+					case 1:
+						prmProdutos.InsereDescontoTipo(prmDesconto, prmNome);
+						break;
+					case 2:
+						prmProdutos.InsereDescontoMarca(prmDesconto, prmNome);
+						break;
+					case 3:
+						prmProdutos.InsereDescontoNome(prmDesconto, prmNome);
+						break;
+					case 4:
+						prmProdutos.InsereDesconto(prmDesconto);
+						break;
+					}
 				}
 			}
 		}
@@ -162,6 +174,7 @@ public class Main {
 						random.nextInt(qtdProdutos), 										// Quantidade
 						"Característica" + prmGrupoProduto + random.nextInt(qtdProdutos));	// Característica
 				produto.addObserver(prmDepartamento); 										// adicionando observer departamento no produto
+				prmDepartamento.addObserver(produto);
 				prmLista.add(produto);														// adicionando objeto na lista
 			}
 		}
@@ -173,15 +186,15 @@ public class Main {
 	public static void ImprimeProdutos(ArrayList<ArrayList<Produto>> prmLoja){
 		
 		for(ArrayList<Produto> prmProdutos : prmLoja ) {
-			for(int i = 0; i < prmProdutos.size(); i++) {
+			for(Produto prmProdutos2 : prmProdutos) {
 				System.out.println(
-						"\n" + prmProdutos.get(i).getNome() + 
-						"\n\tTipo: " + prmProdutos.get(i).getTipo() + 
-						"\n\tPreço: " + prmProdutos.get(i).getPreco() +
-						"\n\tMarca: " + prmProdutos.get(i).getMarca());
-				if(prmLoja.get(prmIndex).get(i).getDesconto() > 0.0f) {
+				"\n" + prmProdutos2.getNome() + 
+				"\n\tTipo: " + prmProdutos2.getTipo() + 
+				"\n\tPreço: " + prmProdutos2.getPreco() +
+				"\n\tMarca: " + prmProdutos2.getMarca());
+				if(prmProdutos2.getDesconto() > 0.0f) {
 					System.out.println(
-							"\t\tCom desconto: " + prmLoja.get(prmIndex).get(i).CalculaPreco());
+					"\t\tCom desconto: " + prmProdutos2.CalculaPreco());
 				}
 			}
 		}

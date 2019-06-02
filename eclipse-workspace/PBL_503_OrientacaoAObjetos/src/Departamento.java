@@ -1,8 +1,9 @@
 import java.util.Observable;
 import java.util.Observer;
 
-public class Departamento implements Observer{
+public class Departamento extends Observable implements Observer{
 	private String nome;
+	private float desconto;
 	
 	public String getNome() {
 		return this.nome;
@@ -10,7 +11,18 @@ public class Departamento implements Observer{
 	public void setNome(String nomeParametro) {
 		this.nome = nomeParametro;
 	}
-	public Departamento( String nomeParametro) {
+	public float getDesconto() {
+		return this.desconto;
+	}
+	public void setDesconto(float prmDesconto) {
+		if(this.desconto < prmDesconto) {
+			this.desconto = prmDesconto;
+			
+			setChanged();
+			notifyObservers(prmDesconto);
+		}
+	}
+	public Departamento(String nomeParametro) {
 		this.nome = nomeParametro;
 	}
 	@Override
